@@ -28,7 +28,15 @@ const usuariosQueries ={
     WHERE
       email=?
 
-  `
+  `,
+  deleteUsuario: `
+    UPDATE
+      usuarios
+    SET
+     status=0
+    WHERE
+     email=?
+  `,
 };
 
 module.exports = usuariosQueries;

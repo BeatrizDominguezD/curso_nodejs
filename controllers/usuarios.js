@@ -1,3 +1,4 @@
+const bcryptjs = require("bcryptjs");
 const {request, response} = require ("express");
 const pool = require("../db/conexion");
 const usuariosQueries = require("../models/usuarios");
@@ -24,12 +25,14 @@ const usuariosPost = async (req = request, res = response) => {
 
     let conn;
     try{
+        const salt = bcryptjs.genSaltSync();
+        const passworHash = bcryptjs.hashSync(password, salt);
         conn= await pool.getConnection();
 
         const usuarios = await conn.query(usuariosQueries.insertUsuario, [
             nombre, 
             email, 
-            password, 
+            passwordHash, 
             status
         ]);
 
@@ -69,9 +72,22 @@ const usuariosPut = async (req = request, res = response) =>{
     }
 };
 
-const usuariosDelete = (req = request, res = response) =>{
-    const {usuario, password} = req.query;
-    res.status(500).json({ msg: "Hola pato desde DELETE", usuario, password});
+const usuariosDelete = async (req = request, res = response) =>{
+    const {email} = req.query;
+    let conn;
+    try{
+        conn= await pool.getConnection();
+        const usuarios = await conn.query(usuariosQueries.deleteUsuario, [email]);
+
+        res.json({ usuarios });
+    } catch (error) {
+        console.log(error);
+        res
+         .status(500)
+         .json({ msg: "Plis contacta al admin uwu", error });
+    } finally {
+        if (conn) conn.end();
+    }
 };
 
 module.exports = { usuariosGet, usuariosPost, usuariosPut, usuariosDelete};
