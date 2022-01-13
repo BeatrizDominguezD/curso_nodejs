@@ -18,6 +18,8 @@ const usuariosQueries ={
         usuarios
       WHERE
         status = 1
+      LIMIT
+        ?, ?
     `,
   updateUsuario:`
     UPDATE

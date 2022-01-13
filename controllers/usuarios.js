@@ -4,10 +4,16 @@ const pool = require("../db/conexion");
 const usuariosQueries = require("../models/usuarios");
 
 const usuariosGet = async (req = request, res = response) => {
+    const {limite = 5, desde = 0} = req.query;
+
+    if(!Number.isInteger(limite) && !Number.isInteger(desde)){
+        res.status(400).json({ msg: "No se puede realizar esta consulta." });
+        return;
+    }
     let conn;
     try{
         conn= await pool.getConnection();
-        const usuarios = await conn.query(usuariosQueries.selectUsuarios);
+        const usuarios = await conn.query(usuariosQueries.selectUsuarios, [parseInt(desde), parseInt(limite)]);
 
         res.json({ usuarios });
     } catch (error) {
