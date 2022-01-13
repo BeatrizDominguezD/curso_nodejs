@@ -1,7 +1,7 @@
 
 require ('dotenv').config();
 
-const Server = require ('./Server')
+const Server = require ('./server')
 
 const server = new Server;
 

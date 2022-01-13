@@ -39,6 +39,16 @@ const usuariosQueries ={
     WHERE
      email=?
   `,
+  getUsuariosByEmail:`
+    SELECT
+      *
+    FROM
+      usuarios
+    WHERE
+      email=?
+    AND
+      status=1
+  `,
 };
 
 module.exports = usuariosQueries;
