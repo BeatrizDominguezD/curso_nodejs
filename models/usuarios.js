@@ -21,7 +21,7 @@ const usuariosQueries ={
       LIMIT
         ?, ?
     `,
-  updateUsuario:`
+  updateUsuarios:`
     UPDATE
       usuarios
     SET
@@ -39,7 +39,7 @@ const usuariosQueries ={
     WHERE
      email=?
   `,
-  getUsuariosByEmail:`
+  getUsuarioByEmail:`
     SELECT
       *
     FROM
